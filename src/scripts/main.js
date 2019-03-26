@@ -110,17 +110,56 @@ const salesByWeek = [{
 // Display the gross profit made on the sale.
 // Here's your first data structure for the sales made last week. You will need to start off by iterating the array of sales with a forEach() method. Then iterate the entries of the vehicle property of each sale.
 
+// Practice Exercise **************************************************
+
+// const displayDiv = document.getElementById("display-container");
+
+// let displayHTML = document.createElement("article");
+// displayHTML.innerHTML = "<h1>Weekly Sales Report</h1><hr>";
+
+// salesByWeek.forEach(sale => {
+//     displayHTML.innerHTML += `<h3>${sale.sales_agent.first_name} ${sale.sales_agent.last_name}</h3>`
+//     for (const vehicleKey of Object.entries(sale.vehicle)) {
+//         displayHTML.innerHTML += `<p>${vehicleKey[0]}: ${vehicleKey[1]}</p>`
+//     }
+//     displayHTML.innerHTML += `<h3>Profit: $${sale.gross_profit}</h3><hr>`
+// });
+
+// displayDiv.appendChild(displayHTML)
+
+// Challenge *****************************************************
+
 const displayDiv = document.getElementById("display-container");
-
+const searchInput = document.getElementById("search-input");
 let displayHTML = document.createElement("article");
-displayHTML.innerHTML = "<h1>Weekly Sales Report</h1><hr>";
 
-salesByWeek.forEach(sale => {
-    displayHTML.innerHTML += `<h3>${sale.sales_agent.first_name} ${sale.sales_agent.last_name}</h3>`
-    for (const vehicleKey of Object.entries(sale.vehicle)) {
-        displayHTML.innerHTML += `<p>${vehicleKey[0]}: ${vehicleKey[1]}</p>`
-    }
-    displayHTML.innerHTML += `<h3>Profit: $${sale.gross_profit}</h3><hr>`
-});
-
-displayDiv.appendChild(displayHTML)
+// console.log(searchInput)
+searchInput.addEventListener("keypress", event => {
+    if (event.charCode === 13) {
+        displayHTML.innerHTML = "<hr>";
+        const searchTerm = event.target.value.toLowerCase()
+        let matchingAgents = [];
+        salesByWeek.forEach(sale => {
+            switch (true) {
+                case sale.sales_agent.mobile.toLowerCase().includes(searchTerm):
+                    matchingAgents.push(sale,);
+                    break;
+                case sale.sales_agent.last_name.toLowerCase().includes(searchTerm):
+                    matchingAgents.push(sale);
+                    break;
+                case sale.sales_agent.first_name.toLowerCase().includes(searchTerm):
+                    matchingAgents.push(sale);
+                    break;
+                case sale.sales_agent.email.toLowerCase().includes(searchTerm):
+                    matchingAgents.push(sale);
+                    break;
+            }
+        })
+        // console.log(matchingAgents)
+        matchingAgents.forEach(item => {
+            displayHTML.innerHTML += `<h3>${item.sales_agent.first_name} ${item.sales_agent.last_name}</h3><p>Email:${item.sales_agent.email}</p><p>Profit: $${item.gross_profit}</p><hr>`
+            displayDiv.appendChild(displayHTML)
+            searchInput.value = "";
+        });
+    };
+})
